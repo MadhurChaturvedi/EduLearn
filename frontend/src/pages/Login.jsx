@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
@@ -52,7 +53,7 @@ const Login = () => {
               </div>
             </div>
             <div className="card-footer text-center small">
-              New here? <a href="/register">Create an account</a>
+              New here? <Link to="/register">Create an account</Link>
             </div>
           </div>
         </div>

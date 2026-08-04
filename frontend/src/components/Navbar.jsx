@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { NavLink, Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -23,39 +24,39 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto">
             <li className="nav-item">
-              <a className="nav-link active" href="#">
+              <NavLink className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} to="/">
                 Home
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} to="/courses">
                 Courses
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} to="/about">
                 About Us
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`} to="/contact">
                 Contact
-              </a>
+              </NavLink>
             </li>
           </ul>
 
           {/* Buttons */}
           <div className="d-flex">
-            <button className="btn btn-outline-primary me-2">
+            <Link className="btn btn-outline-primary me-2" to="/login">
               Login
-            </button>
+            </Link>
 
-            <button className="btn btn-primary">
+            <Link className="btn btn-primary" to="/register">
               Register
-            </button>
+            </Link>
           </div>
         </div>
       </div>

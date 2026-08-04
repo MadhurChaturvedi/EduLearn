@@ -1,5 +1,6 @@
-import React from "react";
-import heroImage from "../assets/images/hero.jpg";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import heroImage from '../assets/images/hero.jpg';
 
 const Hero = () => {
   return (
@@ -32,13 +33,13 @@ const Hero = () => {
             </p>
 
             <div className="mt-4">
-              <button className="btn btn-primary btn-lg me-3">
+              <Link className="btn btn-primary btn-lg me-3" to="/courses">
                 Explore Courses
-              </button>
+              </Link>
 
-              <button className="btn btn-outline-light btn-lg">
+              <Link className="btn btn-outline-light btn-lg" to="/register">
                 Join Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>
