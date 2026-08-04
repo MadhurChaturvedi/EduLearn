@@ -37,18 +37,22 @@ const CoursesPage = () => {
         </div>
       </div>
 
-      {loading ? <div>Loading...</div> : (
-        filtered.length === 0 ? (
-          <div className="text-center py-5">
-            <h4>No courses found</h4>
-            <p className="text-muted">Try a different search or check back later.</p>
+      {loading ? (
+        <div className="d-flex justify-content-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
-        ) : (
-          <div className="row">
-            {filtered.map(c => <CourseCard key={c._id} course={c} />)}
-          </div>
-        )
-      )}
+        </div>
+      ) : (filtered.length === 0 ? (
+        <div className="text-center py-5">
+          <h4>No courses found</h4>
+          <p className="text-muted">Try a different search or check back later.</p>
+        </div>
+      ) : (
+        <div className="row">
+          {filtered.map(c => <CourseCard key={c._id || c.title} course={c} />)}
+        </div>
+      ))}
     </div>
   );
 };

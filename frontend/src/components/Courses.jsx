@@ -38,14 +38,7 @@ const Courses = () => {
 
       <div className="row">
         {courseList.map((course, index) => (
-          <CourseCard
-            key={index}
-            image={course.image}
-            title={course.title}
-            instructor={course.instructor}
-            duration={course.duration}
-            students={course.students}
-          />
+          <CourseCard key={index} course={course} />
         ))}
       </div>
     </section>

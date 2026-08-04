@@ -4,7 +4,7 @@ import CourseCard from '../components/CourseCard';
 import { API_BASE } from '../services/api';
 
 const Dashboard = () => {
-  const { user, token } = useContext(AuthContext);
+  const { user, token, logout } = useContext(AuthContext);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState('my-courses');
@@ -70,8 +70,11 @@ const Dashboard = () => {
                 <h2 className="fw-bold">{user?.name || 'Learner'}'s Dashboard</h2>
                 <p className="text-muted">Track your progress, continue courses, and discover new skills.</p>
               </div>
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 flex-wrap">
                 <button className="btn btn-outline-secondary">Manage account</button>
+                <button className="btn btn-secondary" onClick={logout}>
+                  Logout
+                </button>
                 <button className="btn btn-primary">View certificates</button>
               </div>
             </div>

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
+  const { token, user, logout } = useContext(AuthContext);
+
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-white shadow-sm ">
       <div className="container">
@@ -49,14 +52,26 @@ const Navbar = () => {
           </ul>
 
           {/* Buttons */}
-          <div className="d-flex">
-            <Link className="btn btn-outline-primary me-2" to="/login">
-              Login
-            </Link>
-
-            <Link className="btn btn-primary" to="/register">
-              Register
-            </Link>
+          <div className="d-flex align-items-center gap-2">
+            {token ? (
+              <>
+                <Link className="btn btn-outline-secondary" to="/dashboard">
+                  Dashboard
+                </Link>
+                <button className="btn btn-danger" onClick={logout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link className="btn btn-outline-primary" to="/login">
+                  Login
+                </Link>
+                <Link className="btn btn-primary" to="/register">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
