@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+export const API_BASE = import.meta.env.VITE_API_URL || 'https://edulearn-jer0.onrender.com';
 
 async function request(path, method = 'GET', body = null, token = null) {
   const headers = { 'Content-Type': 'application/json' };

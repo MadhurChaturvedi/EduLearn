@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CourseCard from '../components/CourseCard';
+import { API_BASE } from '../services/api';
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
@@ -10,7 +11,7 @@ const CoursesPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/courses');
+        const res = await fetch(`${API_BASE}/api/courses`);
         const data = await res.json();
         setCourses(data);
       } catch (err) {

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import CourseCard from '../components/CourseCard';
+import { API_BASE } from '../services/api';
 
 const Dashboard = () => {
   const { user, token } = useContext(AuthContext);
@@ -11,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/courses');
+        const res = await fetch(`${API_BASE}/api/courses`);
         const data = await res.json();
         setCourses(data);
       } catch (err) {

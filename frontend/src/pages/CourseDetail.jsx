@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { API_BASE } from '../services/api';
 
 const CourseDetail = () => {
   const { id } = useParams();
@@ -8,7 +9,7 @@ const CourseDetail = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/courses/' + id);
+        const res = await fetch(`${API_BASE}/api/courses/${id}`);
         const data = await res.json();
         setCourse(data);
       } catch (err) {
