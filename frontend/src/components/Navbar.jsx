@@ -6,9 +6,9 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg sticky-top navbar-light bg-white shadow-sm ">
       <div className="container">
         {/* Logo */}
-        <a className="navbar-brand fw-bold text-primary" href="#">
+        <Link className="navbar-brand fw-bold text-primary" to="/">
           EduLearn
-        </a>
+        </Link>
 
         {/* Toggle Button */}
         <button
