@@ -8,6 +8,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -16,10 +17,14 @@ const Register = () => {
     const emailRe = /^\S+@\S+\.\S+$/;
     if (!emailRe.test(email)) return setError('Enter a valid email');
     if (password.length < 6) return setError('Password must be at least 6 characters');
+
+    setLoading(true);
     try {
       await register(name, email, password);
     } catch (err) {
       setError(err.msg || 'Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,7 +53,11 @@ const Register = () => {
                   <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
                 <div className="d-grid">
-                  <button className="btn btn-primary btn-lg">Register</button>
+                  <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
+                    {loading ? (
+                      <><span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Creating account...</>
+                    ) : 'Register'}
+                  </button>
                 </div>
               </form>
 

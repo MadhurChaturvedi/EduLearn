@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -14,10 +15,14 @@ const Login = () => {
     if (!email || !password) return setError('Email and password are required');
     const emailRe = /^\S+@\S+\.\S+$/;
     if (!emailRe.test(email)) return setError('Enter a valid email');
+
+    setLoading(true);
     try {
       await login(email, password);
     } catch (err) {
       setError(err.msg || 'Login failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,7 +47,11 @@ const Login = () => {
                   <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
                 <div className="d-grid">
-                  <button className="btn btn-primary btn-lg">Login</button>
+                  <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
+                    {loading ? (
+                      <><span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Logging in...</>
+                    ) : 'Login'}
+                  </button>
                 </div>
               </form>
 

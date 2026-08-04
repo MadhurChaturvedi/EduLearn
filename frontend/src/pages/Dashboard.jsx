@@ -6,98 +6,140 @@ import { API_BASE } from '../services/api';
 const Dashboard = () => {
   const { user, token } = useContext(AuthContext);
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [active, setActive] = useState('my-courses');
   const dropdownRef = useRef();
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${API_BASE}/api/courses`);
         const data = await res.json();
         setCourses(data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [token]);
 
+  const demoCourses = [
+    { _id: 'd1', image: 'https://source.unsplash.com/collection/190727/600x400?sig=1', title: 'Full Stack Web Development', instructor: 'Maya Singh', duration: '8 weeks', students: '12,400+' },
+    { _id: 'd2', image: 'https://source.unsplash.com/collection/190727/600x400?sig=2', title: 'Modern React & Redux', instructor: 'Ravi Patel', duration: '6 weeks', students: '9,800+' },
+    { _id: 'd3', image: 'https://source.unsplash.com/collection/190727/600x400?sig=3', title: 'Data Science with Python', instructor: 'Sneha Mehta', duration: '10 weeks', students: '15,200+' },
+  ];
+  const visibleCourses = courses.length ? courses : demoCourses;
+
   return (
-    <div className="container-fluid py-4">
-      <div className="row">
-        <div className="col-lg-3">
-          <div className="card h-100 shadow-sm">
-            <div className="card-body">
-              <h5 className="mb-3">Dashboard</h5>
-              <ul className="nav flex-column">
-                <li className="nav-item mb-2"><button className={`btn btn-sm ${active==='my-courses' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => setActive('my-courses')}>My Courses</button></li>
-                <li className="nav-item mb-2"><button className={`btn btn-sm ${active==='discover' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => setActive('discover')}>Discover</button></li>
-                <li className="nav-item mb-2"><button className={`btn btn-sm ${active==='settings' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => setActive('settings')}>Settings</button></li>
-              </ul>
+    <div className="container-fluid py-5">
+      <div className="row gx-4 gy-4">
+        <aside className="col-lg-3">
+          <div className="card rounded-4 border-0 shadow-sm h-100">
+            <div className="card-body p-4">
+              <h5 className="mb-4">Instructor panel</h5>
+              <div className="mb-3">
+                <span className="badge bg-primary rounded-pill mb-2">Pro learner</span>
+                <h6 className="mb-1">{user?.name || 'Learning Partner'}</h6>
+                <p className="text-muted small mb-0">{user?.email || 'You are signed in to access your courses.'}</p>
+              </div>
+              <div className="list-group list-group-flush">
+                {['My Courses', 'Discover', 'Settings'].map(item => {
+                  const key = item.toLowerCase().replace(' ', '-');
+                  return (
+                    <button
+                      key={key}
+                      className={`list-group-item list-group-item-action border-0 rounded-3 mb-2 text-start ${active === key ? 'active' : 'bg-light'}`}
+                      onClick={() => setActive(key)}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        </aside>
 
-        <div className="col-lg-9">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h4>Welcome{user ? `, ${user.name}` : ''}</h4>
-            <div className="dropdown" ref={dropdownRef}>
-              <button className="btn btn-light d-flex align-items-center" data-bs-toggle="dropdown">
-                <img src={user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name||'User')}&background=0D6EFD&color=fff`} alt="avatar" style={{ width:36, height:36, borderRadius: '50%' }} />
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end p-3" style={{ minWidth: 220 }}>
-                {user ? (
-                  <>
-                    <div className="d-flex align-items-center mb-2">
-                      <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=0D6EFD&color=fff`} alt="avatar" style={{ width:48, height:48, borderRadius: '50%' }} />
-                      <div className="ms-2">
-                        <div><strong>{user.name}</strong></div>
-                        <div className="small text-muted">{user.email}</div>
-                      </div>
-                    </div>
-                    <hr />
-                    <button className="btn btn-sm btn-outline-secondary w-100 mb-2">View Profile</button>
-                    <button className="btn btn-sm btn-outline-danger w-100" onClick={() => { if(window.confirm('Log out?')) { window.dispatchEvent(new CustomEvent('edulearn-logout')) } }}>Logout</button>
-                  </>
-                ) : (
-                  <>
-                    <form onSubmit={(e)=>{e.preventDefault();alert('Use main login page');}}>
-                      <div className="mb-2"><input className="form-control form-control-sm" placeholder="Email"/></div>
-                      <div className="mb-2"><input className="form-control form-control-sm" type="password" placeholder="Password"/></div>
-                      <div className="d-grid gap-2"><button className="btn btn-primary btn-sm">Login</button></div>
-                    </form>
-                    <hr />
-                    <a className="btn btn-sm btn-outline-secondary w-100" href="/register">Register</a>
-                  </>
-                )}
-              </ul>
+        <main className="col-lg-9">
+          <div className="mb-4">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+              <div>
+                <p className="text-muted mb-1">Welcome back</p>
+                <h2 className="fw-bold">{user?.name || 'Learner'}'s Dashboard</h2>
+                <p className="text-muted">Track your progress, continue courses, and discover new skills.</p>
+              </div>
+              <div className="d-flex gap-2">
+                <button className="btn btn-outline-secondary">Manage account</button>
+                <button className="btn btn-primary">View certificates</button>
+              </div>
             </div>
           </div>
 
-          {active === 'my-courses' && (
-            <div>
-              <h5>Your Courses</h5>
-              <div className="row">
-                {courses.slice(0,6).map(c => <CourseCard key={c._id} course={c} />)}
+          <div className="row g-3 mb-4">
+            <div className="col-md-4">
+              <div className="card rounded-4 border-0 shadow-sm p-4 h-100">
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <h6 className="mb-0">Courses</h6>
+                  <span className="badge bg-success">{visibleCourses.length}</span>
+                </div>
+                <p className="text-muted small">Active courses in your library.</p>
               </div>
             </div>
-          )}
-
-          {active === 'discover' && (
-            <div>
-              <h5>Discover Courses</h5>
-              <div className="row">
-                {courses.map(c => <CourseCard key={c._id} course={c} />)}
+            <div className="col-md-4">
+              <div className="card rounded-4 border-0 shadow-sm p-4 h-100">
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <h6 className="mb-0">Progress</h6>
+                  <span className="text-primary">82%</span>
+                </div>
+                <p className="text-muted small">Average completion across your active courses.</p>
               </div>
             </div>
-          )}
-
-          {active === 'settings' && (
-            <div>
-              <h5>Account Settings</h5>
-              <p className="text-muted">Manage account preferences, password, and notifications.</p>
+            <div className="col-md-4">
+              <div className="card rounded-4 border-0 shadow-sm p-4 h-100">
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <h6 className="mb-0">Certificates</h6>
+                  <span className="text-warning">4 earned</span>
+                </div>
+                <p className="text-muted small">Certificates earned after course completion.</p>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+
+          <div className="card rounded-4 border-0 shadow-sm p-4 mb-4">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+              <div>
+                <h5 className="mb-1">Continue where you left off</h5>
+                <p className="text-muted mb-0">Your top recommended courses are ready to continue.</p>
+              </div>
+              <button className="btn btn-outline-primary">Resume learning</button>
+            </div>
+          </div>
+
+          <div>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="mb-0">{active === 'discover' ? 'Discover Courses' : 'Your Courses'}</h5>
+              <div className="text-muted small">Showing top {visibleCourses.length} courses</div>
+            </div>
+
+            {loading ? (
+              <div className="d-flex justify-content-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <div className="row g-3">
+                {visibleCourses.map(c => (
+                  <div key={c._id} className="col-md-6 col-xl-4">
+                    <CourseCard course={c} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </main>
       </div>
     </div>
   );
